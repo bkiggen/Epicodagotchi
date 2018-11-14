@@ -2,19 +2,15 @@ import React from 'react';
 import Face from './Face';
 import StatusList from './StatusList';
 
-function Game({ name, coffeeLevel, sleepLevel, workLevel, onCoffeeLevelChange, onWorkLevelChange, onSleepLevelChange}){
+function Game({ name, masterLevelList, onLevelChange }){
 
   return (
     <div>
       <p>{name}</p>
       <Face/>
       <StatusList
-        coffeeLevel={coffeeLevel}
-        sleepLevel={sleepLevel}
-        workLevel={workLevel}
-        onCoffeeLevelChange={onCoffeeLevelChange}
-        onWorkLevelChange={onWorkLevelChange}
-        onSleepLevelChange={onSleepLevelChange}
+        masterLevelList={masterLevelList}
+        onLevelChange={onLevelChange}
       />
     </div>
   );

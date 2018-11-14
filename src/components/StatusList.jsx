@@ -1,25 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Status from './Status';
 
-function StatusList({coffeeLevel, sleepLevel, workLevel, onCoffeeLevelChange, onWorkLevelChange, onSleepLevelChange }) {
+function StatusList({ masterLevelList, onLevelChange }) {
+
   return (
     <div>
-      <Status
-        statusLevel={coffeeLevel}
-        statusName='Coffee Level'
-        onLevelClick={onCoffeeLevelChange}
-      />
-      <Status
-        statusLevel={sleepLevel}
-        statusName='Sleep Level'
-        onLevelClick={onSleepLevelChange}
-      />
-      <Status
-        statusLevel={workLevel}
-        statusName='Work Level'
-        onLevelClick={onWorkLevelChange}
-      />
+
+      {masterLevelList.map((type, index) =>
+        <Status
+          statusLevel={type.level}
+          name={type.name}
+          onLevelChange={onLevelChange}
+          id={index}
+          key={index}
+        />
+      )}
     </div>
   );
 }

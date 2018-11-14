@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-function Status({ statusName, statusLevel, onLevelClick }) {
+
+function Status({ statusLevel, name, onLevelChange, id }) {
   return (
     <div>
-      <p onClick={onLevelClick}>{statusName}</p>
+      <p onClick={() => onLevelChange(id)}>{name}</p>
       {statusLevel}
     </div>
   );
