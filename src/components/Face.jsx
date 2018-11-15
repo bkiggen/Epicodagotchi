@@ -2,10 +2,16 @@ import React from 'react';
 import HappyFace from './HappyFace';
 import SadFace from './SadFace';
 
-function Face() {
+function Face({ happy }) {
+  let currentlyVisibleFace = null;
+  if (happy) {
+    currentlyVisibleFace = <HappyFace/>
+  } else {
+    currentlyVisibleFace = <SadFace/>
+  }
   return (
     <div>
-      <HappyFace/>
+      {currentlyVisibleFace}
     </div>
   );
 }

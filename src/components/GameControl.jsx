@@ -1,13 +1,16 @@
 import React from 'react';
 import Welcome from './Welcome';
 import Game from './Game';
+import GameOver from './GameOver';
 
 class GameControl extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      gameVisibleOnPage: true,
+      happy: true,
+      gameVisibleOnPage: false,
+      alive: true,
       name: 'Student Name',
       masterLevelList: [{
         name: 'Coffee',
@@ -31,6 +34,29 @@ class GameControl extends React.Component {
     this.timer = this.timer.bind(this);
   }
 
+  checkAlive(i) {
+    let newLevelList = JSON.parse(JSON.stringify(this.state.masterLevelList));
+    if (newLevelList[i].level > 99 || newLevelList[i].level < 1) {
+      this.setState({
+        alive: false
+      });
+    }
+  }
+
+  checkHappy(i) {
+    let newLevelList = JSON.parse(JSON.stringify(this.state.masterLevelList));
+    if (newLevelList[0].level < 11 || newLevelList[0].level > 90 || newLevelList[1].level < 11 || newLevelList[1].level > 90 || newLevelList[2].level < 11 || newLevelList[2].level > 90) {
+      this.setState({
+        happy: false
+      }
+    );
+  } else {
+    this.setState({
+      happy: true
+    })
+  }
+  }
+
   handleNameEntry(name) {
     this.setState({gameVisibleOnPage: true});
     let newName = name.name;
@@ -43,20 +69,25 @@ class GameControl extends React.Component {
     this.setState({
       masterLevelList: newLevelList
     });
+    this.checkAlive(id);
+    this.checkHappy(id);
   }
 
   timer() {
     let newLevelList = JSON.parse(JSON.stringify(this.state.masterLevelList));
     for(let i=0; i < 3; i++){
-      newLevelList[i].level -= 1;
+      newLevelList[i].level -= .1;
+      this.checkAlive(i);
+      this.checkHappy(i);
     }
     this.setState({
       masterLevelList: newLevelList
     });
+
   }
 
   gameInterval() {
-    let interval = setInterval(this.timer, 1000);
+    let interval = setInterval(this.timer, 100);
   }
 
   componentWillMount() {
@@ -66,12 +97,16 @@ class GameControl extends React.Component {
   render() {
     let currentlyVisibleContent = null;
     if (this.state.gameVisibleOnPage) {
-      currentlyVisibleContent = <Game
-        name={this.state.name}
-        masterLevelList={this.state.masterLevelList}
-        onLevelChange={this.handleLevelChange}
-      />;
-
+      if (this.state.alive) {
+        currentlyVisibleContent = <Game
+          happy={this.state.happy}
+          name={this.state.name}
+          masterLevelList={this.state.masterLevelList}
+          onLevelChange={this.handleLevelChange}
+          />;
+      } else {
+        currentlyVisibleContent = <GameOver/>
+      }
     } else {
       currentlyVisibleContent = <Welcome onNameEntry={this.handleNameEntry}/>;
     }
